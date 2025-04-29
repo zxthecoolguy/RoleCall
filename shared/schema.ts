@@ -103,7 +103,8 @@ export enum MessageType {
   ERROR = "error",
   CONNECT = "connect",
   PLAYER_UPDATE = "player_update",
-  ROOM_LIST_UPDATE = "room_list_update"
+  ROOM_LIST_UPDATE = "room_list_update",
+  UPDATE_ROOM_SETTINGS = "update_room_settings"
 }
 
 // WebSocket message format

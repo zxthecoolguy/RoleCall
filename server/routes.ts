@@ -107,6 +107,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await handleStartGame(ws, data.payload);
             break;
             
+          case MessageType.UPDATE_ROOM_SETTINGS:
+            await handleUpdateRoomSettings(ws, data.payload);
+            break;
+            
           default:
             sendErrorToClient(ws, "Unknown message type");
         }
@@ -431,6 +435,66 @@ async function handleStartGame(ws: WebSocket, payload: any) {
   } catch (error) {
     console.error("Error starting game:", error);
     sendErrorToClient(ws, "Failed to start game");
+  }
+}
+
+async function handleUpdateRoomSettings(ws: WebSocket, payload: { 
+  roomId: number; 
+  settings: { type?: "public" | "private" }
+}) {
+  const { roomId, settings } = payload;
+  const clientData = clients.get(ws);
+  
+  if (!clientData || !clientData.roomId || clientData.roomId !== roomId) {
+    return sendErrorToClient(ws, "Not in this room");
+  }
+  
+  try {
+    // Verify player is host
+    const players = await storage.getPlayersInRoom(roomId);
+    const player = players.find(p => p.id === clientData.playerId);
+    
+    if (!player || !player.isHost) {
+      return sendErrorToClient(ws, "Only the host can update room settings");
+    }
+    
+    // Get current room
+    const room = await storage.getRoomById(roomId);
+    if (!room) return;
+    
+    let roomUpdated = false;
+    
+    // Update room type
+    if (settings.type && settings.type !== room.type) {
+      // Update room type
+      const updatedRoom = await storage.updateRoomType(roomId, settings.type);
+      
+      if (updatedRoom) {
+        roomUpdated = true;
+        
+        // Add system message
+        await storage.addMessage({
+          roomId,
+          senderId: null,
+          senderName: "SYSTEM",
+          content: `Room is now ${settings.type}`,
+          isSystem: true
+        });
+        
+        // Update public rooms list if visibility changed
+        if (settings.type === "public" || room.type === "public") {
+          broadcastPublicRooms();
+        }
+      }
+    }
+    
+    if (roomUpdated) {
+      // Broadcast room update to all clients in the room
+      broadcastRoomUpdate(roomId);
+    }
+  } catch (error) {
+    console.error("Error updating room settings:", error);
+    sendErrorToClient(ws, "Failed to update room settings");
   }
 }
 
