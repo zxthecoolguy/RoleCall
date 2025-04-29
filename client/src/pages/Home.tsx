@@ -18,11 +18,11 @@ export default function Home() {
       
       <div className="max-w-md w-full text-center z-10">
         <h1 className="text-6xl font-heading font-bold mb-2">
-          <span className="text-primary text-glow">Role</span>
-          <span className="text-secondary">Call</span>
+          <span className="text-white text-glow">Role</span>
+          <span className="text-white">Call</span>
         </h1>
         
-        <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-primary/60 to-transparent mx-auto mb-6"></div>
+        <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-secondary/60 to-transparent mx-auto mb-6"></div>
         
         <p className="text-lg mb-10 text-textSecondary leading-relaxed">
           A mysterious game of deduction, deception, and hidden loyalties
@@ -67,7 +67,7 @@ export default function Home() {
       <div className="mt-24 text-center max-w-xl z-10">
         <h3 className="font-heading font-semibold text-xl mb-4 text-textPrimary relative inline-block">
           <span className="relative z-10">The Secret War</span>
-          <div className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-glowBlue to-transparent"></div>
+          <div className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent"></div>
         </h3>
         
         <div className="grid grid-cols-2 gap-6 mb-5">

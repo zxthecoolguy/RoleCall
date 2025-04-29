@@ -69,7 +69,7 @@ export default function Header() {
                 <span className="group-hover:text-white/80 transition-all duration-300">Role</span>
                 <span className="text-white group-hover:text-white/80 transition-all duration-300">Call</span>
               </h1>
-              <span className="text-[9px] text-white/70 -mt-1.5 font-mono tracking-wider border-b border-secondary pb-1">DECEPTION & MYSTERY</span>
+              <span className="text-[9px] text-white/70 -mt-1.5 font-mono tracking-wider">DECEPTION & MYSTERY</span>
             </div>
             <span className="ml-2 text-[10px] bg-secondary/80 text-white px-2 py-0.5 rounded-sm font-mono tracking-wider">BETA</span>
           </button>
