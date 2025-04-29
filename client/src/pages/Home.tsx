@@ -5,6 +5,21 @@ import { Users, Swords, Eye, Shield, UserCheck } from 'lucide-react';
 
 export default function Home() {
   const { navigateTo } = useNavigation();
+  
+  const handleCreateRoom = () => {
+    console.log('Create Room clicked');
+    navigateTo('create-room');
+  };
+
+  const handleJoinRoom = () => {
+    console.log('Join Room clicked');
+    navigateTo('join-room');
+  };
+
+  const handleBrowseRooms = () => {
+    console.log('Browse Rooms clicked');
+    navigateTo('public-rooms');
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-10 relative">
@@ -30,7 +45,7 @@ export default function Home() {
         <div className="space-y-5">
           <Button
             className="w-full bg-primary hover:bg-primary/90 py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => navigateTo('create-room')}
+            onClick={handleCreateRoom}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <Users className="h-5 w-5" />
@@ -41,7 +56,7 @@ export default function Home() {
           
           <Button
             className="w-full bg-secondary hover:bg-secondary/90 text-black py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => navigateTo('join-room')}
+            onClick={handleJoinRoom}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <UserCheck className="h-5 w-5" />
@@ -53,7 +68,7 @@ export default function Home() {
           <Button
             variant="outline"
             className="w-full bg-darkElevated hover:bg-darkElevated py-6 px-6 rounded-md font-bold text-lg border border-darkBorder hover:border-accent/30 relative group"
-            onClick={() => navigateTo('public-rooms')}
+            onClick={handleBrowseRooms}
           >
             <span className="relative z-10 flex items-center justify-center gap-3 group-hover:text-accent/90 transition-colors">
               <Eye className="h-5 w-5" />

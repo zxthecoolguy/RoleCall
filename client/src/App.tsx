@@ -7,6 +7,7 @@ import GameLobby from "@/pages/GameLobby";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { RoomProvider } from "@/context/RoomContext";
+import { UserProvider } from "@/context/UserContext";
 
 // Create a navigation context that will control which page to show
 export type PageType = 'home' | 'create-room' | 'join-room' | 'public-rooms' | 'game-lobby';
@@ -32,6 +33,11 @@ function App() {
   const navigateTo = (page: PageType) => {
     console.log('Navigating to:', page);
     setCurrentPage(page);
+    
+    // For debugging: 
+    window.setTimeout(() => {
+      console.log('Current page after navigation:', page);
+    }, 100);
   };
 
   // Render the appropriate page based on the current state
