@@ -60,15 +60,17 @@ function App() {
 
   return (
     <NavigationContext.Provider value={{ currentPage, navigateTo }}>
-      <RoomProvider>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow container mx-auto p-4 md:p-6">
-            {renderPage()}
-          </main>
-          <Footer />
-        </div>
-      </RoomProvider>
+      <UserProvider>
+        <RoomProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-grow container mx-auto p-4 md:p-6">
+              {renderPage()}
+            </main>
+            <Footer />
+          </div>
+        </RoomProvider>
+      </UserProvider>
     </NavigationContext.Provider>
   );
 }
