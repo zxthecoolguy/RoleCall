@@ -1,12 +1,16 @@
-import { v4 as uuidv4 } from "uuid";
+import { eq, and, desc, asc } from 'drizzle-orm';
+import { db } from './db';
 import {
   users,
   type User,
   type InsertUser,
+  rooms,
   type Room,
   type InsertRoom,
+  players,
   type Player,
   type InsertPlayer,
+  messages,
   type Message,
   type InsertMessage,
   RoomStatus,
@@ -14,8 +18,7 @@ import {
   PlayerStatus
 } from "@shared/schema";
 
-// modify the interface with any CRUD methods
-// you might need
+// Interface for storage operations
 export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
@@ -42,6 +45,133 @@ export interface IStorage {
   getMessagesForRoom(roomId: number, limit?: number): Promise<Message[]>;
 }
 
+/**
+ * PostgreSQL database implementation of the storage interface
+ */
+export class DatabaseStorage implements IStorage {
+  
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const results = await db.select().from(users).where(eq(users.id, id));
+    return results.length > 0 ? results[0] : undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const results = await db.select().from(users).where(eq(users.username, username));
+    return results.length > 0 ? results[0] : undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const results = await db.insert(users).values(insertUser).returning();
+    return results[0];
+  }
+  
+  // Room methods
+  async createRoom(roomData: InsertRoom): Promise<Room> {
+    // Generate a unique 6-character room code
+    const code = generateRoomCode();
+    
+    // Insert the room with the generated code
+    const results = await db.insert(rooms).values({
+      ...roomData,
+      code,
+      status: RoomStatus.WAITING
+    }).returning();
+    
+    return results[0];
+  }
+  
+  async getRoomByCode(code: string): Promise<Room | undefined> {
+    // Case-insensitive search for room code
+    const results = await db.select().from(rooms)
+      .where(eq(rooms.code, code.toUpperCase()));
+      
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  async getRoomById(id: number): Promise<Room | undefined> {
+    const results = await db.select().from(rooms).where(eq(rooms.id, id));
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  async getPublicRooms(): Promise<Room[]> {
+    // Get all public rooms with waiting status
+    return db.select().from(rooms).where(
+      and(
+        eq(rooms.type, RoomType.PUBLIC),
+        eq(rooms.status, RoomStatus.WAITING)
+      )
+    );
+  }
+  
+  async updateRoomStatus(id: number, status: RoomStatus): Promise<Room | undefined> {
+    const results = await db.update(rooms)
+      .set({ status })
+      .where(eq(rooms.id, id))
+      .returning();
+      
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  async deleteRoom(id: number): Promise<boolean> {
+    const results = await db.delete(rooms).where(eq(rooms.id, id)).returning();
+    return results.length > 0;
+  }
+  
+  // Player methods
+  async addPlayerToRoom(playerData: InsertPlayer): Promise<Player> {
+    const results = await db.insert(players).values(playerData).returning();
+    return results[0];
+  }
+  
+  async getPlayersInRoom(roomId: number): Promise<Player[]> {
+    return db.select().from(players).where(eq(players.roomId, roomId));
+  }
+  
+  async updatePlayerStatus(id: number, status: PlayerStatus): Promise<Player | undefined> {
+    const results = await db.update(players)
+      .set({ status })
+      .where(eq(players.id, id))
+      .returning();
+      
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  async removePlayerFromRoom(id: number): Promise<boolean> {
+    const results = await db.delete(players).where(eq(players.id, id)).returning();
+    return results.length > 0;
+  }
+  
+  async getPlayerByUsername(roomId: number, username: string): Promise<Player | undefined> {
+    const results = await db.select().from(players).where(
+      and(
+        eq(players.roomId, roomId),
+        eq(players.username, username)
+      )
+    );
+    
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  // Message methods
+  async addMessage(messageData: InsertMessage): Promise<Message> {
+    const results = await db.insert(messages).values(messageData).returning();
+    return results[0];
+  }
+  
+  async getMessagesForRoom(roomId: number, limit: number = 50): Promise<Message[]> {
+    // Get messages for a room, ordered by sent time (ascending)
+    return db.select()
+      .from(messages)
+      .where(eq(messages.roomId, roomId))
+      .orderBy(asc(messages.sentAt))
+      .limit(limit);
+  }
+}
+
+/**
+ * In-memory implementation of the storage interface (for testing/development)
+ */
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private rooms: Map<number, Room>;
@@ -192,9 +322,21 @@ export class MemStorage implements IStorage {
   }
 }
 
-// Helper function to generate a random room code (6 characters, alphanumeric)
+/**
+ * Generate a better, more readable room code
+ * Format: 6 characters, uppercase letters and numbers (avoiding ambiguous characters)
+ */
 function generateRoomCode(): string {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
+  const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed similar looking characters (O/0, I/1)
+  let code = '';
+  
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters.charAt(randomIndex);
+  }
+  
+  return code;
 }
 
-export const storage = new MemStorage();
+// Switch from MemStorage to DatabaseStorage for persistent data
+export const storage = new DatabaseStorage();
