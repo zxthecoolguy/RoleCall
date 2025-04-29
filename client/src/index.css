@@ -7,42 +7,42 @@
 
 :root {
   /* Dark mysterious color palette */
-  --background: 0 0% 100%;
-  --foreground: 20 14.3% 4.1%;
-  --muted: 60 4.8% 95.9%;
-  --muted-foreground: 25 5.3% 44.7%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
+  --background: 270 25% 5%; /* Very dark purple-black */
+  --foreground: 300 10% 85%;
+  --muted: 270 15% 10%;
+  --muted-foreground: 270 10% 60%;
+  --popover: 270 25% 7%;
+  --popover-foreground: 300 10% 85%;
+  --card: 270 25% 7%;
+  --card-foreground: 300 10% 85%;
+  --border: 270 20% 15%;
+  --input: 270 20% 15%;
   
   /* Custom theme colors */
-  --primary: 220 100% 50%; /* Deep blue */
-  --primary-foreground: 210 40% 98%;
-  --secondary: 34 100% 50%; /* Amber gold */
-  --secondary-foreground: 0 0% 0%;
-  --accent: 270 100% 60%; /* Royal purple */
+  --primary: 280 70% 35%; /* Dark purple */
+  --primary-foreground: 270 30% 95%;
+  --secondary: 345 60% 35%; /* Deep crimson */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 200 70% 35%; /* Dark teal */
   --accent-foreground: 0 0% 100%;
-  --destructive: 0 100% 40%; /* Dark red */
+  --destructive: 0 65% 30%; /* Muted blood red */
   --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 20 14.3% 4.1%;
+  --ring: 270 25% 25%;
   --radius: 0.5rem;
   
   /* Game-specific color palette */
-  --success: 142 76% 40%; /* Dark green */
-  --error: 0 100% 35%; /* Deep red */
-  --darkBg: 230 25% 7%; /* Nearly black with blue tint */
-  --darkBgAlt: 235 20% 5%; /* Darker alternative */
-  --darkElevated: 235 20% 12%; /* Slightly lighter than bg */
-  --darkSurface: 235 20% 10%; /* Between bg and elevated */
-  --darkBorder: 235 20% 15%; /* Subtle border */
-  --textPrimary: 220 30% 90%; /* Nearly white with blue tint */
-  --textSecondary: 220 15% 70%; /* Light gray with blue tint */
-  --textMuted: 220 10% 50%; /* Medium gray with blue tint */
-  --glowBlue: 220 100% 65%; /* Glowing blue for effects */
-  --glowPurple: 270 100% 65%; /* Glowing purple for effects */
+  --success: 140 60% 25%; /* Very dark green */
+  --error: 0 60% 30%; /* Dark blood red */
+  --darkBg: 270 25% 5%; /* Almost black with purple tint */
+  --darkBgAlt: 270 25% 3%; /* Even darker alternative */
+  --darkElevated: 270 20% 10%; /* Slightly elevated surfaces */
+  --darkSurface: 270 20% 8%; /* Surface elements */
+  --darkBorder: 270 25% 15%; /* Subtle borders */
+  --textPrimary: 300 10% 90%; /* Nearly white with purple tint */
+  --textSecondary: 300 8% 70%; /* Light gray with purple tint */
+  --textMuted: 300 5% 50%; /* Medium gray with purple tint */
+  --glowPurple: 280 100% 55%; /* Glowing purple for effects */
+  --glowRed: 345 100% 55%; /* Glowing red for effects */
 }
 
 @layer base {
@@ -53,30 +53,41 @@
   body {
     @apply bg-darkBg text-textPrimary font-sans antialiased;
     background-image: 
-      radial-gradient(circle at 20% 20%, rgba(17, 19, 31, 0.8) 0%, rgba(6, 8, 19, 0.9) 100%),
-      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(255,255,255,0.03)' fill-rule='evenodd'/%3E%3C/svg%3E");
+      radial-gradient(circle at 20% 20%, rgba(32, 18, 50, 0.8) 0%, rgba(20, 10, 30, 0.9) 100%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(150,120,190,0.02)' fill-rule='evenodd'/%3E%3C/svg%3E");
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading text-textPrimary;
   }
   
-  /* Make glowing blue text with subtle animation */
-  .text-glow {
-    text-shadow: 0 0 8px rgba(82, 145, 255, 0.6);
-    animation: glow 4s ease-in-out infinite alternate;
+  /* Make glowing purple text with subtle animation */
+  .text-glow-purple {
+    text-shadow: 0 0 8px rgba(140, 80, 200, 0.6);
+    animation: glow-purple 4s ease-in-out infinite alternate;
   }
   
-  @keyframes glow {
-    from { text-shadow: 0 0 4px rgba(82, 145, 255, 0.3); }
-    to { text-shadow: 0 0 12px rgba(82, 145, 255, 0.8); }
+  /* Make glowing red text for contrast */
+  .text-glow-red {
+    text-shadow: 0 0 8px rgba(190, 60, 80, 0.6);
+    animation: glow-red 4s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow-purple {
+    from { text-shadow: 0 0 4px rgba(140, 80, 200, 0.3); }
+    to { text-shadow: 0 0 12px rgba(140, 80, 200, 0.8); }
+  }
+  
+  @keyframes glow-red {
+    from { text-shadow: 0 0 4px rgba(190, 60, 80, 0.3); }
+    to { text-shadow: 0 0 12px rgba(190, 60, 80, 0.8); }
   }
 }
 
 @layer components {
   .game-card {
     @apply bg-darkSurface border border-darkBorder rounded-lg shadow-xl relative overflow-hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(10, 10, 30, 0.4) inset;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(30, 16, 45, 0.4) inset;
   }
   
   .game-card::after {
@@ -86,28 +97,74 @@
     left: -50%;
     width: 200%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(82, 145, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(140, 80, 200, 0.2), transparent);
     opacity: 0.7;
+  }
+  
+  /* Drama masks logo animation */
+  .masks-logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .mask-tragedy {
+    filter: drop-shadow(0 0 8px rgba(140, 80, 200, 0.5));
+    animation: mask-float 6s ease-in-out infinite alternate;
+  }
+  
+  .mask-comedy {
+    filter: drop-shadow(0 0 8px rgba(190, 60, 80, 0.5));
+    animation: mask-float 6s ease-in-out infinite alternate-reverse;
+  }
+  
+  @keyframes mask-float {
+    0% { transform: translateY(0px) rotate(-3deg); }
+    50% { transform: translateY(-5px) rotate(0deg); }
+    100% { transform: translateY(0px) rotate(3deg); }
   }
   
   .btn-primary {
     @apply bg-primary hover:bg-primary/90 text-white relative overflow-hidden;
-    box-shadow: 0 0 10px rgba(10, 10, 40, 0.5), 0 0 5px rgba(82, 145, 255, 0.3);
+    box-shadow: 0 0 10px rgba(30, 16, 45, 0.5), 0 0 5px rgba(140, 80, 200, 0.3);
     transition: all 0.3s ease;
   }
   
   .btn-primary:hover {
-    box-shadow: 0 0 15px rgba(10, 10, 40, 0.6), 0 0 8px rgba(82, 145, 255, 0.5);
+    box-shadow: 0 0 15px rgba(30, 16, 45, 0.6), 0 0 8px rgba(140, 80, 200, 0.5);
   }
   
   .btn-secondary {
-    @apply bg-secondary hover:bg-secondary/90 text-black;
-    box-shadow: 0 0 10px rgba(10, 10, 40, 0.5), 0 0 5px rgba(255, 183, 0, 0.3);
+    @apply bg-secondary hover:bg-secondary/90 text-white relative overflow-hidden;
+    box-shadow: 0 0 10px rgba(30, 16, 45, 0.5), 0 0 5px rgba(190, 60, 80, 0.3);
     transition: all 0.3s ease;
   }
   
   .btn-secondary:hover {
-    box-shadow: 0 0 15px rgba(10, 10, 40, 0.6), 0 0 8px rgba(255, 183, 0, 0.5);
+    box-shadow: 0 0 15px rgba(30, 16, 45, 0.6), 0 0 8px rgba(190, 60, 80, 0.5);
+  }
+  
+  /* Mysterious card hover effect */
+  .mysterious-card {
+    @apply bg-darkSurface border border-darkBorder rounded-lg shadow-xl relative overflow-hidden;
+    transition: all 0.4s ease;
+  }
+  
+  .mysterious-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(140, 80, 200, 0.1), rgba(20, 10, 30, 0));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .mysterious-card:hover::before {
+    opacity: 1;
   }
 }
 

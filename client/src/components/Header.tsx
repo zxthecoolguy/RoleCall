@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { useState, useEffect } from 'react';
 import { generateRandomUsername } from '@/lib/utils';
 import { useLocation } from 'wouter';
+import DramaMasksLogo from './DramaMasksLogo';
 
 export default function Header() {
   // Simplified version without context dependency
@@ -63,10 +64,14 @@ export default function Header() {
             onClick={() => navigate('/')}
             className="flex items-center group"
           >
-            <h1 className="text-2xl font-heading font-bold text-textPrimary">
-              <span className="text-primary group-hover:text-glow transition-all duration-300">Role</span>
-              <span className="text-secondary">Call</span>
-            </h1>
+            <DramaMasksLogo size={36} className="mr-3" />
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-heading font-bold text-textPrimary flex items-center">
+                <span className="text-glow-purple group-hover:text-primary transition-all duration-300">Role</span>
+                <span className="text-glow-red group-hover:text-secondary transition-all duration-300">Call</span>
+              </h1>
+              <span className="text-[9px] text-textSecondary -mt-1.5 font-mono tracking-wider">DECEPTION & MYSTERY</span>
+            </div>
             <span className="ml-2 text-[10px] bg-accent/80 text-white px-2 py-0.5 rounded-sm font-mono tracking-wider">BETA</span>
           </button>
         </div>
