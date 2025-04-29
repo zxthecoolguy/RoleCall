@@ -41,10 +41,17 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        // Custom game colors
+        // Custom game colors - new mysterious theme
         darkBg: "hsl(var(--darkBg))",
+        darkBgAlt: "hsl(var(--darkBgAlt))",
         darkElevated: "hsl(var(--darkElevated))",
         darkSurface: "hsl(var(--darkSurface))",
+        darkBorder: "hsl(var(--darkBorder))",
+        textPrimary: "hsl(var(--textPrimary))",
+        textSecondary: "hsl(var(--textSecondary))",
+        textMuted: "hsl(var(--textMuted))",
+        glowBlue: "hsl(var(--glowBlue))",
+        glowPurple: "hsl(var(--glowPurple))",
         success: "hsl(var(--success))",
         error: "hsl(var(--error))",
         // Original colors

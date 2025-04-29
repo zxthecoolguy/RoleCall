@@ -1,16 +1,18 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Settings } from 'lucide-react';
+import { Settings, User, Shuffle, Home } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useState, useEffect } from 'react';
 import { generateRandomUsername } from '@/lib/utils';
+import { useLocation } from 'wouter';
 
 export default function Header() {
   // Simplified version without context dependency
@@ -26,6 +28,7 @@ export default function Header() {
   
   const [showSettings, setShowSettings] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
+  const [_, navigate] = useLocation();
 
   // Save username to localStorage when it changes
   useEffect(() => {
@@ -53,30 +56,56 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-darkElevated py-4 border-b border-gray-800">
+    <header className="bg-darkBgAlt/80 backdrop-blur-md py-4 border-b border-darkBorder/50 sticky top-0 z-50">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center">
-          <h1 className="text-2xl font-heading font-bold text-white">
-            <span className="text-primary">Role</span>
-            <span className="text-secondary">Call</span>
-          </h1>
-          <span className="ml-2 text-xs bg-accent text-white px-2 py-0.5 rounded-full font-mono">BETA</span>
+          <button 
+            onClick={() => navigate('/')}
+            className="flex items-center group"
+          >
+            <h1 className="text-2xl font-heading font-bold text-textPrimary">
+              <span className="text-primary group-hover:text-glow transition-all duration-300">Role</span>
+              <span className="text-secondary">Call</span>
+            </h1>
+            <span className="ml-2 text-[10px] bg-accent/80 text-white px-2 py-0.5 rounded-sm font-mono tracking-wider">BETA</span>
+          </button>
         </div>
         
         <div className="flex items-center">
-          <span className="mr-3 text-sm opacity-80">{username}</span>
+          <div className="mr-3 text-sm text-textSecondary bg-darkElevated/80 px-3 py-1 rounded border border-darkBorder/50 flex items-center">
+            <User className="h-3.5 w-3.5 mr-2 text-primary/80" />
+            <span>{username}</span>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-darkElevated transition-colors">
-                <Settings className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="rounded-md hover:bg-darkElevated border border-transparent hover:border-darkBorder/50 transition-all"
+              >
+                <Settings className="h-5 w-5 text-textSecondary" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-darkElevated border-gray-700">
+            <DropdownMenuContent 
+              align="end" 
+              className="bg-darkElevated/95 backdrop-blur-md border-darkBorder text-textPrimary shadow-xl"
+            >
+              <DropdownMenuItem 
+                onClick={() => navigate('/')}
+                className="hover:bg-darkSurface focus:bg-darkSurface flex items-center gap-2"
+              >
+                <Home className="h-4 w-4" />
+                <span>Home</span>
+              </DropdownMenuItem>
+              
+              <DropdownMenuSeparator className="bg-darkBorder/50" />
+              
               <DropdownMenuItem 
                 onClick={() => setShowSettings(true)}
-                className="hover:bg-darkSurface focus:bg-darkSurface"
+                className="hover:bg-darkSurface focus:bg-darkSurface flex items-center gap-2"
               >
-                Change Username
+                <User className="h-4 w-4" />
+                <span>Change Username</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -84,35 +113,44 @@ export default function Header() {
       </div>
 
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
-        <DialogContent className="bg-darkSurface text-white border-gray-700">
+        <DialogContent className="bg-darkElevated border-darkBorder text-textPrimary shadow-2xl">
           <DialogHeader>
-            <DialogTitle>Change Your Username</DialogTitle>
+            <DialogTitle className="text-center font-heading tracking-wide">Identity Selection</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <Input
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              className="bg-darkBg border-gray-700 text-white"
-              placeholder="Enter new username"
-              maxLength={20}
-            />
+            <div className="relative">
+              <Input
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                className="bg-darkBg border-darkBorder text-textPrimary pl-10"
+                placeholder="Enter your alias"
+                maxLength={20}
+              />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-textMuted" />
+            </div>
+            
             <Button 
               variant="outline" 
               onClick={handleRandomUsername}
-              className="mt-2 w-full border-gray-700 hover:bg-gray-800"
+              className="mt-3 w-full border-darkBorder bg-darkSurface hover:bg-darkSurface/80 text-textSecondary flex items-center justify-center gap-2"
             >
-              Generate Random Username
+              <Shuffle className="h-4 w-4" />
+              <span>Generate Random Identity</span>
             </Button>
           </div>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setShowSettings(false)}>
+            <Button 
+              variant="ghost" 
+              onClick={() => setShowSettings(false)}
+              className="text-textSecondary hover:text-textPrimary"
+            >
               Cancel
             </Button>
             <Button 
               onClick={handleSaveUsername}
               className="bg-primary hover:bg-primary/90 text-white"
             >
-              Save
+              Confirm
             </Button>
           </DialogFooter>
         </DialogContent>
