@@ -158,7 +158,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
         break;
     }
-  }, [lastMessage, currentRoom, toast]);
+  }, [lastMessage, currentRoom, toast, setLocation]);
   
   // Create a room
   const createRoom = useCallback((roomData: {
