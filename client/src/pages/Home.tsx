@@ -46,7 +46,7 @@ export default function Home() {
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <UserCheck className="h-5 w-5" />
-              <span>Join Game Room</span>
+              <span>Join Private Room</span>
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary to-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Button>
