@@ -24,7 +24,7 @@ export default function CreateRoom() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createRoom(formData);
-    setLocation('/game-lobby');
+    // Navigation will be handled by RoomContext when the room is created
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

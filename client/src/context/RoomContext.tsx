@@ -3,6 +3,7 @@ import { useWebSocket } from '@/lib/websocket';
 import { MessageType, type Room, type Player, type Message } from '@shared/schema';
 import { useUser } from './UserContext';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from 'wouter';
 
 interface RoomContextType {
   // Room state
@@ -58,6 +59,7 @@ const RoomContext = createContext<RoomContextType>(defaultValue);
 export function RoomProvider({ children }: { children: React.ReactNode }) {
   const { username } = useUser();
   const { toast } = useToast();
+  const [_, setLocation] = useLocation();
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -96,6 +98,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages([]);
           setLoading(false);
+          setLocation('/game-lobby');
         }
         break;
       
@@ -107,6 +110,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages(lastMessage.payload.messages || []);
           setLoading(false);
+          setLocation('/game-lobby');
         }
         break;
       

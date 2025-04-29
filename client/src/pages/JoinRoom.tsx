@@ -23,7 +23,7 @@ export default function JoinRoom() {
     }
     
     joinRoom(roomCode);
-    setLocation('/game-lobby');
+    // Navigation will be handled by RoomContext when the room is joined
   };
 
   return (
