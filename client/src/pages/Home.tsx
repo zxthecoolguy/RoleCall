@@ -17,9 +17,8 @@ export default function Home() {
       </div>
       
       <div className="max-w-md w-full text-center z-10">
-        <h1 className="text-5xl font-heading font-bold mb-2">
-          <span className="text-white text-glow">Welcome to Role</span>
-          <span className="text-white text-glow">Call</span>
+        <h1 className="text-4xl font-heading font-bold mb-2">
+          <span className="text-white text-glow">Welcome to RoleCall</span>
         </h1>
         
         <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-secondary/60 to-transparent mx-auto mb-6"></div>
@@ -35,7 +34,7 @@ export default function Home() {
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <Users className="h-5 w-5" />
-              <span>Create Game Room</span>
+              <span>Create Room</span>
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-glowBlue opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Button>
