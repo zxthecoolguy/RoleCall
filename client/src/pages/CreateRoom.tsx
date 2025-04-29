@@ -16,7 +16,7 @@ export default function CreateRoom() {
   
   const [formData, setFormData] = useState({
     name: "",
-    type: RoomType.PUBLIC,
+    type: RoomType.PRIVATE,
     capacity: 8,
     allowChat: true
   });

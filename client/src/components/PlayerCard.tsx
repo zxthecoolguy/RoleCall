@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn, getInitial, getAvatarColor, getPlayerStatusText, getPlayerStatusColor } from '@/lib/utils';
 import { type Player } from '@shared/schema';
+import { Crown } from 'lucide-react';
 
 interface PlayerCardProps {
   player: Player;
