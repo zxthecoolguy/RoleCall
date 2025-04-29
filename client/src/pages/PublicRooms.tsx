@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { useLocation } from 'wouter';
+import { useNavigation } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import RoomCard from '@/components/RoomCard';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function PublicRooms() {
-  const [_, setLocation] = useLocation();
+  const { navigateTo } = useNavigation();
   const { publicRooms, joinRoom } = useRoom();
 
   const handleJoinRoom = (roomCode: string) => {
     joinRoom(roomCode);
-    // Use direct window location for navigation
-    window.location.href = '/game-lobby';
+    // Navigate to game lobby
+    navigateTo('game-lobby');
   };
 
   if (!publicRooms) {
@@ -26,7 +26,7 @@ export default function PublicRooms() {
         <Button
           variant="outline"
           className="bg-darkElevated hover:bg-gray-800 py-2 px-4 rounded-lg border border-gray-700 text-sm"
-          onClick={() => setLocation('/')}
+          onClick={() => navigateTo('home')}
         >
           Back
         </Button>
@@ -38,7 +38,7 @@ export default function PublicRooms() {
           <p className="text-gray-400 mb-6">Be the first to create a public game room!</p>
           <Button
             className="bg-primary hover:bg-primary/90"
-            onClick={() => window.location.href = '/create-room'}
+            onClick={() => navigateTo('create-room')}
           >
             Create a Room
           </Button>

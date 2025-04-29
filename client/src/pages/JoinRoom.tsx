@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useLocation } from 'wouter';
+import { useNavigation } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import { useUser } from '@/context/UserContext';
 
 export default function JoinRoom() {
-  const [_, setLocation] = useLocation();
+  const { navigateTo } = useNavigation();
   const { joinRoom, loading, currentRoom } = useRoom();
   const { username, setUsername } = useUser();
   
@@ -18,9 +18,9 @@ export default function JoinRoom() {
   // Navigate to game lobby when room is joined
   useEffect(() => {
     if (currentRoom) {
-      setLocation('/game-lobby');
+      navigateTo('game-lobby');
     }
-  }, [currentRoom, setLocation]);
+  }, [currentRoom, navigateTo]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +30,8 @@ export default function JoinRoom() {
     }
     
     joinRoom(roomCode);
-    // Use direct window location for navigation
-    window.location.href = '/game-lobby';
+    // Navigate immediately
+    navigateTo('game-lobby');
   };
 
   return (
@@ -79,7 +79,7 @@ export default function JoinRoom() {
                 type="button"
                 variant="outline"
                 className="bg-darkElevated hover:bg-gray-800 py-2 px-6 rounded-lg border border-gray-700"
-                onClick={() => setLocation('/')}
+                onClick={() => navigateTo('home')}
               >
                 Cancel
               </Button>

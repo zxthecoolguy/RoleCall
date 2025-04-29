@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useLocation } from 'wouter';
+import { useNavigation } from '@/App';
 import { Users, Swords, Eye, Shield, UserCheck } from 'lucide-react';
 
 export default function Home() {
-  const [_, setLocation] = useLocation();
+  const { navigateTo } = useNavigation();
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-10 relative">
@@ -30,7 +30,7 @@ export default function Home() {
         <div className="space-y-5">
           <Button
             className="w-full bg-primary hover:bg-primary/90 py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => window.location.href = '/create-room'}
+            onClick={() => navigateTo('create-room')}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <Users className="h-5 w-5" />
@@ -41,7 +41,7 @@ export default function Home() {
           
           <Button
             className="w-full bg-secondary hover:bg-secondary/90 text-black py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => window.location.href = '/join-room'}
+            onClick={() => navigateTo('join-room')}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <UserCheck className="h-5 w-5" />
@@ -53,7 +53,7 @@ export default function Home() {
           <Button
             variant="outline"
             className="w-full bg-darkElevated hover:bg-darkElevated py-6 px-6 rounded-md font-bold text-lg border border-darkBorder hover:border-accent/30 relative group"
-            onClick={() => setLocation('/public-rooms')}
+            onClick={() => navigateTo('public-rooms')}
           >
             <span className="relative z-10 flex items-center justify-center gap-3 group-hover:text-accent/90 transition-colors">
               <Eye className="h-5 w-5" />

@@ -3,7 +3,7 @@ import { useWebSocket } from '@/lib/websocket';
 import { MessageType, type Room, type Player, type Message } from '@shared/schema';
 import { useUser } from './UserContext';
 import { useToast } from '@/hooks/use-toast';
-import { useLocation } from 'wouter';
+import { useNavigation } from '@/App';
 
 interface RoomContextType {
   // Room state
@@ -57,9 +57,25 @@ const defaultValue: RoomContextType = {
 const RoomContext = createContext<RoomContextType>(defaultValue);
 
 export function RoomProvider({ children }: { children: React.ReactNode }) {
-  const { username } = useUser();
+  // Try to get username, but have a fallback
+  let username = '';
+  try {
+    const userContext = useUser();
+    username = userContext.username;
+  } catch (error) {
+    console.error('Failed to get username from UserContext', error);
+    // Try to get username from localStorage as fallback
+    try {
+      const storedUsername = localStorage.getItem('rolecall_username');
+      if (storedUsername) {
+        username = storedUsername;
+      }
+    } catch (localStorageError) {
+      console.error('Failed to get username from localStorage', localStorageError);
+    }
+  }
   const { toast } = useToast();
-  const [_, setLocation] = useLocation();
+  const { navigateTo } = useNavigation();
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -98,7 +114,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages([]);
           setLoading(false);
-          setLocation('/game-lobby');
+          navigateTo('game-lobby');
         }
         break;
       
@@ -110,7 +126,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages(lastMessage.payload.messages || []);
           setLoading(false);
-          setLocation('/game-lobby');
+          navigateTo('game-lobby');
         }
         break;
       
@@ -158,7 +174,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
         break;
     }
-  }, [lastMessage, currentRoom, toast, setLocation]);
+  }, [lastMessage, currentRoom, toast, navigateTo]);
   
   // Create a room
   const createRoom = useCallback((roomData: {
@@ -177,8 +193,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       }
     });
     // Navigate to lobby immediately
-    setLocation('/game-lobby');
-  }, [sendMessage, username, setLocation]);
+    navigateTo('game-lobby');
+  }, [sendMessage, username, navigateTo]);
   
   // Join a room
   const joinRoom = useCallback((code: string) => {
@@ -192,8 +208,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       }
     });
     // Navigate to lobby immediately
-    setLocation('/game-lobby');
-  }, [sendMessage, username, setLocation]);
+    navigateTo('game-lobby');
+  }, [sendMessage, username, navigateTo]);
   
   // Leave current room
   const leaveRoom = useCallback(() => {
@@ -211,8 +227,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     });
     
     // Return to home page
-    window.location.href = '/';
-  }, [currentRoom, playerId, sendMessage]);
+    navigateTo('home');
+  }, [currentRoom, playerId, sendMessage, navigateTo]);
   
   // Send a chat message
   const sendChatMessage = useCallback((content: string) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useLocation } from 'wouter';
+import { useNavigation } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import { useUser } from '@/context/UserContext';
 import PlayerCard, { EmptyPlayerSlot } from '@/components/PlayerCard';
@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { RoomType } from '@shared/schema';
 
 export default function GameLobby() {
-  const [_, setLocation] = useLocation();
+  const { navigateTo } = useNavigation();
   const { currentRoom, players, isHost, isReady, toggleReady, leaveRoom, startGame, updateRoomType } = useRoom();
   const { username } = useUser();
   const [showLeaveDialog, setShowLeaveDialog] = useState(false);
@@ -21,9 +21,9 @@ export default function GameLobby() {
 
   useEffect(() => {
     if (!currentRoom) {
-      setLocation('/');
+      navigateTo('home');
     }
-  }, [currentRoom, setLocation]);
+  }, [currentRoom, navigateTo]);
 
   if (!currentRoom || !players) {
     return <GameLobbySkeleton />;
@@ -31,12 +31,12 @@ export default function GameLobby() {
 
   const handleLeave = () => {
     leaveRoom();
-    setLocation('/');
+    navigateTo('home');
   };
 
   const handleDisband = () => {
     leaveRoom();
-    setLocation('/');
+    navigateTo('home');
   };
 
   const canStartGame = players.length >= 4 && 
