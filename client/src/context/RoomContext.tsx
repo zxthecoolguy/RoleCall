@@ -209,6 +209,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         playerId
       }
     });
+    
+    // Return to home page
+    window.location.href = '/';
   }, [currentRoom, playerId, sendMessage]);
   
   // Send a chat message

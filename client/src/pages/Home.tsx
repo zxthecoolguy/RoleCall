@@ -30,7 +30,7 @@ export default function Home() {
         <div className="space-y-5">
           <Button
             className="w-full bg-primary hover:bg-primary/90 py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => setLocation('/create-room')}
+            onClick={() => window.location.href = '/create-room'}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <Users className="h-5 w-5" />
@@ -41,7 +41,7 @@ export default function Home() {
           
           <Button
             className="w-full bg-secondary hover:bg-secondary/90 text-black py-6 px-6 rounded-md font-bold text-lg relative group overflow-hidden"
-            onClick={() => setLocation('/join-room')}
+            onClick={() => window.location.href = '/join-room'}
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
               <UserCheck className="h-5 w-5" />

@@ -30,6 +30,8 @@ export default function JoinRoom() {
     }
     
     joinRoom(roomCode);
+    // Use direct window location for navigation
+    window.location.href = '/game-lobby';
   };
 
   return (

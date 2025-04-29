@@ -31,6 +31,8 @@ export default function CreateRoom() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createRoom(formData);
+    // Use direct window location for navigation
+    window.location.href = '/game-lobby';
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

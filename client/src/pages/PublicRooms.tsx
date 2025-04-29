@@ -11,7 +11,8 @@ export default function PublicRooms() {
 
   const handleJoinRoom = (roomCode: string) => {
     joinRoom(roomCode);
-    setLocation('/game-lobby');
+    // Use direct window location for navigation
+    window.location.href = '/game-lobby';
   };
 
   if (!publicRooms) {
@@ -37,7 +38,7 @@ export default function PublicRooms() {
           <p className="text-gray-400 mb-6">Be the first to create a public game room!</p>
           <Button
             className="bg-primary hover:bg-primary/90"
-            onClick={() => setLocation('/create-room')}
+            onClick={() => window.location.href = '/create-room'}
           >
             Create a Room
           </Button>
