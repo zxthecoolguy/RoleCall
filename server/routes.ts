@@ -6,6 +6,7 @@ import {
   MessageType, 
   type WebSocketMessage, 
   RoomStatus, 
+  RoomType,
   PlayerStatus, 
   type Room, 
   type Player 
@@ -466,8 +467,9 @@ async function handleUpdateRoomSettings(ws: WebSocket, payload: {
     
     // Update room type
     if (settings.type && settings.type !== room.type) {
-      // Update room type
-      const updatedRoom = await storage.updateRoomType(roomId, settings.type);
+      // Update room type with the correct enum value
+      const newType = settings.type === 'public' ? RoomType.PUBLIC : RoomType.PRIVATE;
+      const updatedRoom = await storage.updateRoomType(roomId, newType);
       
       if (updatedRoom) {
         roomUpdated = true;

@@ -14,7 +14,7 @@ import { RoomType } from '@shared/schema';
 
 export default function GameLobby() {
   const [_, setLocation] = useLocation();
-  const { currentRoom, players, isHost, isReady, toggleReady, leaveRoom, startGame } = useRoom();
+  const { currentRoom, players, isHost, isReady, toggleReady, leaveRoom, startGame, updateRoomType } = useRoom();
   const { username } = useUser();
   const [showLeaveDialog, setShowLeaveDialog] = useState(false);
   const [showDisbandDialog, setShowDisbandDialog] = useState(false);
@@ -80,9 +80,20 @@ export default function GameLobby() {
               <div className="mb-6">
                 <h3 className="font-heading font-semibold mb-3">Room Settings</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                  <div className="flex justify-between p-2 bg-darkBg rounded">
+                  <div className="flex justify-between items-center p-2 bg-darkBg rounded">
                     <span className="text-gray-400">Room Type</span>
-                    <span className="capitalize">{currentRoom.type}</span>
+                    {isHost ? (
+                      <div className="flex items-center gap-2">
+                        <Switch 
+                          id="room-type" 
+                          checked={currentRoom.type === 'public'}
+                          onCheckedChange={(isPublic) => updateRoomType(isPublic)}
+                        />
+                        <Label htmlFor="room-type" className="capitalize">{currentRoom.type}</Label>
+                      </div>
+                    ) : (
+                      <span className="capitalize">{currentRoom.type}</span>
+                    )}
                   </div>
                   <div className="flex justify-between p-2 bg-darkBg rounded">
                     <span className="text-gray-400">Player Capacity</span>

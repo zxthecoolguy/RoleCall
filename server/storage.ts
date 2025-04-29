@@ -31,6 +31,7 @@ export interface IStorage {
   getRoomById(id: number): Promise<Room | undefined>;
   getPublicRooms(): Promise<Room[]>;
   updateRoomStatus(id: number, status: RoomStatus): Promise<Room | undefined>;
+  updateRoomType(id: number, type: RoomType): Promise<Room | undefined>;
   deleteRoom(id: number): Promise<boolean>;
   
   // Player methods
@@ -107,6 +108,15 @@ export class DatabaseStorage implements IStorage {
   async updateRoomStatus(id: number, status: RoomStatus): Promise<Room | undefined> {
     const results = await db.update(rooms)
       .set({ status })
+      .where(eq(rooms.id, id))
+      .returning();
+      
+    return results.length > 0 ? results[0] : undefined;
+  }
+  
+  async updateRoomType(id: number, type: RoomType): Promise<Room | undefined> {
+    const results = await db.update(rooms)
+      .set({ type })
       .where(eq(rooms.id, id))
       .returning();
       
@@ -251,6 +261,16 @@ export class MemStorage implements IStorage {
     const room = this.rooms.get(id);
     if (room) {
       const updatedRoom = { ...room, status };
+      this.rooms.set(id, updatedRoom);
+      return updatedRoom;
+    }
+    return undefined;
+  }
+  
+  async updateRoomType(id: number, type: RoomType): Promise<Room | undefined> {
+    const room = this.rooms.get(id);
+    if (room) {
+      const updatedRoom = { ...room, type };
       this.rooms.set(id, updatedRoom);
       return updatedRoom;
     }
