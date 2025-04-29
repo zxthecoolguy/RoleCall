@@ -17,9 +17,9 @@ export default function Home() {
       </div>
       
       <div className="max-w-md w-full text-center z-10">
-        <h1 className="text-6xl font-heading font-bold mb-2">
+        <h1 className="text-5xl font-heading font-bold mb-2">
           <span className="text-white text-glow">Welcome to Role</span>
-          <span className="text-white">Call</span>
+          <span className="text-white text-glow">Call</span>
         </h1>
         
         <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-secondary/60 to-transparent mx-auto mb-6"></div>
