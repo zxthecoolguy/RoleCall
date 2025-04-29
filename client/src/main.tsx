@@ -9,17 +9,15 @@ import App from "./App";
 import { UserProvider } from "./context/UserContext";
 import { RoomProvider } from "./context/RoomContext";
 
-// Provider structure
+// Provider structure - simplified to avoid circular dependencies
 const AppProviders = () => {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <UserProvider>
-            <RoomProvider>
-              <App />
-              <Toaster />
-            </RoomProvider>
+            <App />
+            <Toaster />
           </UserProvider>
         </TooltipProvider>
       </QueryClientProvider>

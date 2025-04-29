@@ -6,6 +6,7 @@ import PublicRooms from "@/pages/PublicRooms";
 import GameLobby from "@/pages/GameLobby";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { RoomProvider } from "@/context/RoomContext";
 
 // Create a navigation context that will control which page to show
 export type PageType = 'home' | 'create-room' | 'join-room' | 'public-rooms' | 'game-lobby';
@@ -53,13 +54,15 @@ function App() {
 
   return (
     <NavigationContext.Provider value={{ currentPage, navigateTo }}>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow container mx-auto p-4 md:p-6">
-          {renderPage()}
-        </main>
-        <Footer />
-      </div>
+      <RoomProvider>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow container mx-auto p-4 md:p-6">
+            {renderPage()}
+          </main>
+          <Footer />
+        </div>
+      </RoomProvider>
     </NavigationContext.Provider>
   );
 }
