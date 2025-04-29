@@ -31,15 +31,16 @@ export default function PlayerCard({ player, isCurrentPlayer = false }: PlayerCa
         </span>
       </div>
       <div>
-        <p className="font-medium">{player.username}</p>
-        {player.isHost ? (
-          <span className="text-xs bg-accent px-2 py-0.5 rounded text-darkBg">Host</span>
+        <div className="flex items-center">
+          <p className="font-medium">{player.username}</p>
+          {player.isHost && (
+            <Crown className="h-4 w-4 ml-1 text-yellow-500" />
+          )}
+        </div>
+        {player.status === "ready" ? (
+          <span className="text-xs bg-success px-2 py-0.5 rounded text-darkBg">Ready</span>
         ) : (
-          player.status === "ready" ? (
-            <span className="text-xs bg-success px-2 py-0.5 rounded text-darkBg">Ready</span>
-          ) : (
-            <span className="text-xs text-gray-400">{statusText}</span>
-          )
+          <span className="text-xs text-gray-400">{statusText}</span>
         )}
       </div>
     </div>

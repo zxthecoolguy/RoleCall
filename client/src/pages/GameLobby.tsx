@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'wouter';
 import { useRoom } from '@/context/RoomContext';
@@ -8,7 +8,9 @@ import ChatPanel from '@/components/ChatPanel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRoomCode } from '@/lib/utils';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { RoomType } from '@shared/schema';
 
 export default function GameLobby() {
   const [_, setLocation] = useLocation();

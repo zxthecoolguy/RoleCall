@@ -23,9 +23,10 @@ interface RoomContextType {
   sendChatMessage: (content: string) => void;
   toggleReady: (ready: boolean) => void;
   startGame: () => void;
+  updateRoomType: (isPublic: boolean) => void;
   
   // Public rooms
-  publicRooms: (Room & { playerCount: number })[];
+  publicRooms: (Room & { playerCount: number; hostName?: string })[];
   
   // Status
   isHost: boolean;
@@ -48,7 +49,8 @@ const defaultValue: RoomContextType = {
   leaveRoom: () => {},
   sendChatMessage: () => {},
   toggleReady: () => {},
-  startGame: () => {}
+  startGame: () => {},
+  updateRoomType: () => {}
 };
 
 const RoomContext = createContext<RoomContextType>(defaultValue);
@@ -267,6 +269,37 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     });
   }, [currentRoom, players, username, sendMessage]);
   
+  // Update room type (public/private) - host only
+  const updateRoomType = useCallback((isPublic: boolean) => {
+    if (!currentRoom) {
+      console.warn('Cannot update room type: No current room');
+      return;
+    }
+    
+    // Recalculate isHost within this callback to avoid circular dependency
+    const playerIsHost = players.some(player => 
+      player.username === username && player.isHost
+    );
+    
+    if (!playerIsHost) {
+      console.warn('Cannot update room type: Not the host');
+      return;
+    }
+    
+    const newType = isPublic ? 'public' : 'private';
+    console.log(`Updating room type to ${newType}`);
+    
+    sendMessage({
+      type: MessageType.UPDATE_ROOM_SETTINGS,
+      payload: {
+        roomId: currentRoom.id,
+        settings: {
+          type: newType
+        }
+      }
+    });
+  }, [currentRoom, players, username, sendMessage]);
+  
   // Log when state changes for debugging
   useEffect(() => {
     console.log('Room context state updated:', {
@@ -291,7 +324,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     leaveRoom,
     sendChatMessage,
     toggleReady,
-    startGame
+    startGame,
+    updateRoomType
   };
   
   return (
