@@ -176,7 +176,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         username
       }
     });
-  }, [sendMessage, username]);
+    // Navigate to lobby immediately
+    setLocation('/game-lobby');
+  }, [sendMessage, username, setLocation]);
   
   // Join a room
   const joinRoom = useCallback((code: string) => {
@@ -189,7 +191,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         username
       }
     });
-  }, [sendMessage, username]);
+    // Navigate to lobby immediately
+    setLocation('/game-lobby');
+  }, [sendMessage, username, setLocation]);
   
   // Leave current room
   const leaveRoom = useCallback(() => {

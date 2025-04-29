@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,11 +9,18 @@ import { useUser } from '@/context/UserContext';
 
 export default function JoinRoom() {
   const [_, setLocation] = useLocation();
-  const { joinRoom, loading } = useRoom();
+  const { joinRoom, loading, currentRoom } = useRoom();
   const { username, setUsername } = useUser();
   
   const [roomCode, setRoomCode] = useState('');
   const [playerName, setPlayerName] = useState(username);
+
+  // Navigate to game lobby when room is joined
+  useEffect(() => {
+    if (currentRoom) {
+      setLocation('/game-lobby');
+    }
+  }, [currentRoom, setLocation]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +30,6 @@ export default function JoinRoom() {
     }
     
     joinRoom(roomCode);
-    // Navigation will be handled by RoomContext when the room is joined
   };
 
   return (

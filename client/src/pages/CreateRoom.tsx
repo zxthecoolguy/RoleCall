@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,7 @@ import { RoomType } from '@shared/schema';
 
 export default function CreateRoom() {
   const [_, setLocation] = useLocation();
-  const { createRoom, loading } = useRoom();
+  const { createRoom, loading, currentRoom } = useRoom();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -21,10 +21,16 @@ export default function CreateRoom() {
     allowChat: true
   });
 
+  // Navigate to game lobby when room is created
+  useEffect(() => {
+    if (currentRoom) {
+      setLocation('/game-lobby');
+    }
+  }, [currentRoom, setLocation]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createRoom(formData);
-    // Navigation will be handled by RoomContext when the room is created
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
