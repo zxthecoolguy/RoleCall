@@ -8,41 +8,40 @@
 :root {
   /* Dark mysterious color palette */
   --background: 270 25% 5%; /* Very dark purple-black */
-  --foreground: 300 10% 85%;
+  --foreground: 0 0% 100%; /* Pure white */
   --muted: 270 15% 10%;
-  --muted-foreground: 270 10% 60%;
+  --muted-foreground: 0 0% 80%; /* Light gray */
   --popover: 270 25% 7%;
-  --popover-foreground: 300 10% 85%;
+  --popover-foreground: 0 0% 100%; /* Pure white */
   --card: 270 25% 7%;
-  --card-foreground: 300 10% 85%;
+  --card-foreground: 0 0% 100%; /* Pure white */
   --border: 270 20% 15%;
   --input: 270 20% 15%;
   
   /* Custom theme colors */
-  --primary: 280 70% 35%; /* Dark purple */
-  --primary-foreground: 270 30% 95%;
-  --secondary: 345 60% 35%; /* Deep crimson */
-  --secondary-foreground: 0 0% 100%;
-  --accent: 200 70% 35%; /* Dark teal */
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 65% 30%; /* Muted blood red */
-  --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 270 25% 25%;
+  --primary: 0 0% 100%; /* White */
+  --primary-foreground: 0 0% 0%; /* Black */
+  --secondary: 0 80% 45%; /* Strong red */
+  --secondary-foreground: 0 0% 100%; /* White */
+  --accent: 0 80% 45%; /* Same red */
+  --accent-foreground: 0 0% 100%; /* White */
+  --destructive: 0 65% 45%; /* Stronger red */
+  --destructive-foreground: 0 0% 100%; /* White */
+  --ring: 0 80% 45%; /* Red */
   --radius: 0.5rem;
   
   /* Game-specific color palette */
-  --success: 140 60% 25%; /* Very dark green */
-  --error: 0 60% 30%; /* Dark blood red */
+  --success: 120 60% 45%; /* Green */
+  --error: 0 80% 45%; /* Red */
   --darkBg: 270 25% 5%; /* Almost black with purple tint */
   --darkBgAlt: 270 25% 3%; /* Even darker alternative */
   --darkElevated: 270 20% 10%; /* Slightly elevated surfaces */
   --darkSurface: 270 20% 8%; /* Surface elements */
-  --darkBorder: 270 25% 15%; /* Subtle borders */
-  --textPrimary: 300 10% 90%; /* Nearly white with purple tint */
-  --textSecondary: 300 8% 70%; /* Light gray with purple tint */
-  --textMuted: 300 5% 50%; /* Medium gray with purple tint */
-  --glowPurple: 280 100% 55%; /* Glowing purple for effects */
-  --glowRed: 345 100% 55%; /* Glowing red for effects */
+  --darkBorder: 0 80% 45%; /* Red borders */
+  --textPrimary: 0 0% 100%; /* Pure white */
+  --textSecondary: 0 0% 80%; /* Light gray */
+  --textMuted: 0 0% 60%; /* Medium gray */
+  --glowRed: 0 80% 55%; /* Glowing red for effects */
 }
 
 @layer base {
@@ -61,33 +60,22 @@
     @apply font-heading text-textPrimary;
   }
   
-  /* Make glowing purple text with subtle animation */
-  .text-glow-purple {
-    text-shadow: 0 0 8px rgba(140, 80, 200, 0.6);
-    animation: glow-purple 4s ease-in-out infinite alternate;
+  /* Make glowing red text with subtle animation */
+  .text-glow {
+    text-shadow: 0 0 8px rgba(255, 60, 60, 0.6);
+    animation: glow 4s ease-in-out infinite alternate;
   }
   
-  /* Make glowing red text for contrast */
-  .text-glow-red {
-    text-shadow: 0 0 8px rgba(190, 60, 80, 0.6);
-    animation: glow-red 4s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow-purple {
-    from { text-shadow: 0 0 4px rgba(140, 80, 200, 0.3); }
-    to { text-shadow: 0 0 12px rgba(140, 80, 200, 0.8); }
-  }
-  
-  @keyframes glow-red {
-    from { text-shadow: 0 0 4px rgba(190, 60, 80, 0.3); }
-    to { text-shadow: 0 0 12px rgba(190, 60, 80, 0.8); }
+  @keyframes glow {
+    from { text-shadow: 0 0 4px rgba(255, 60, 60, 0.3); }
+    to { text-shadow: 0 0 12px rgba(255, 60, 60, 0.8); }
   }
 }
 
 @layer components {
   .game-card {
     @apply bg-darkSurface border border-darkBorder rounded-lg shadow-xl relative overflow-hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(30, 16, 45, 0.4) inset;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(50, 10, 10, 0.4) inset;
   }
   
   .game-card::after {
@@ -97,52 +85,28 @@
     left: -50%;
     width: 200%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(140, 80, 200, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.2), transparent);
     opacity: 0.7;
   }
   
-  /* Drama masks logo animation */
-  .masks-logo {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    margin: 0 auto;
-  }
-  
-  .mask-tragedy {
-    filter: drop-shadow(0 0 8px rgba(140, 80, 200, 0.5));
-    animation: mask-float 6s ease-in-out infinite alternate;
-  }
-  
-  .mask-comedy {
-    filter: drop-shadow(0 0 8px rgba(190, 60, 80, 0.5));
-    animation: mask-float 6s ease-in-out infinite alternate-reverse;
-  }
-  
-  @keyframes mask-float {
-    0% { transform: translateY(0px) rotate(-3deg); }
-    50% { transform: translateY(-5px) rotate(0deg); }
-    100% { transform: translateY(0px) rotate(3deg); }
-  }
-  
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white relative overflow-hidden;
-    box-shadow: 0 0 10px rgba(30, 16, 45, 0.5), 0 0 5px rgba(140, 80, 200, 0.3);
+    @apply bg-primary hover:bg-primary/90 text-black relative overflow-hidden;
+    box-shadow: 0 0 10px rgba(30, 16, 15, 0.5), 0 0 5px rgba(255, 60, 60, 0.3);
     transition: all 0.3s ease;
   }
   
   .btn-primary:hover {
-    box-shadow: 0 0 15px rgba(30, 16, 45, 0.6), 0 0 8px rgba(140, 80, 200, 0.5);
+    box-shadow: 0 0 15px rgba(30, 16, 15, 0.6), 0 0 8px rgba(255, 60, 60, 0.5);
   }
   
   .btn-secondary {
     @apply bg-secondary hover:bg-secondary/90 text-white relative overflow-hidden;
-    box-shadow: 0 0 10px rgba(30, 16, 45, 0.5), 0 0 5px rgba(190, 60, 80, 0.3);
+    box-shadow: 0 0 10px rgba(30, 16, 15, 0.5), 0 0 5px rgba(255, 60, 60, 0.3);
     transition: all 0.3s ease;
   }
   
   .btn-secondary:hover {
-    box-shadow: 0 0 15px rgba(30, 16, 45, 0.6), 0 0 8px rgba(190, 60, 80, 0.5);
+    box-shadow: 0 0 15px rgba(30, 16, 15, 0.6), 0 0 8px rgba(255, 60, 60, 0.5);
   }
   
   /* Mysterious card hover effect */
@@ -158,7 +122,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(140, 80, 200, 0.1), rgba(20, 10, 30, 0));
+    background: linear-gradient(135deg, rgba(255, 60, 60, 0.1), rgba(20, 10, 10, 0));
     opacity: 0;
     transition: opacity 0.4s ease;
   }

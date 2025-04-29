@@ -64,21 +64,21 @@ export default function Header() {
             onClick={() => navigate('/')}
             className="flex items-center group"
           >
-            <DramaMasksLogo size={36} className="mr-3" />
             <div className="flex flex-col">
-              <h1 className="text-2xl font-heading font-bold text-textPrimary flex items-center">
-                <span className="text-glow-purple group-hover:text-primary transition-all duration-300">Role</span>
-                <span className="text-glow-red group-hover:text-secondary transition-all duration-300">Call</span>
+              <h1 className="text-2xl font-heading font-bold text-white flex items-center relative pb-1">
+                <span className="group-hover:text-white/80 transition-all duration-300">Role</span>
+                <span className="text-white group-hover:text-white/80 transition-all duration-300">Call</span>
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-secondary"></span>
               </h1>
-              <span className="text-[9px] text-textSecondary -mt-1.5 font-mono tracking-wider">DECEPTION & MYSTERY</span>
+              <span className="text-[9px] text-white/70 -mt-0.5 font-mono tracking-wider">DECEPTION & MYSTERY</span>
             </div>
-            <span className="ml-2 text-[10px] bg-accent/80 text-white px-2 py-0.5 rounded-sm font-mono tracking-wider">BETA</span>
+            <span className="ml-2 text-[10px] bg-secondary/80 text-white px-2 py-0.5 rounded-sm font-mono tracking-wider">BETA</span>
           </button>
         </div>
         
         <div className="flex items-center">
-          <div className="mr-3 text-sm text-textSecondary bg-darkElevated/80 px-3 py-1 rounded border border-darkBorder/50 flex items-center">
-            <User className="h-3.5 w-3.5 mr-2 text-primary/80" />
+          <div className="mr-3 text-sm text-white bg-darkElevated/80 px-3 py-1 rounded border border-secondary/30 flex items-center">
+            <User className="h-3.5 w-3.5 mr-2 text-secondary" />
             <span>{username}</span>
           </div>
           <DropdownMenu>
@@ -86,30 +86,30 @@ export default function Header() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="rounded-md hover:bg-darkElevated border border-transparent hover:border-darkBorder/50 transition-all"
+                className="rounded-md hover:bg-darkElevated border border-transparent hover:border-secondary/30 transition-all"
               >
-                <Settings className="h-5 w-5 text-textSecondary" />
+                <Settings className="h-5 w-5 text-white" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="bg-darkElevated/95 backdrop-blur-md border-darkBorder text-textPrimary shadow-xl"
+              className="bg-darkElevated/95 backdrop-blur-md border-secondary/30 text-white shadow-xl"
             >
               <DropdownMenuItem 
                 onClick={() => navigate('/')}
                 className="hover:bg-darkSurface focus:bg-darkSurface flex items-center gap-2"
               >
-                <Home className="h-4 w-4" />
+                <Home className="h-4 w-4 text-secondary" />
                 <span>Home</span>
               </DropdownMenuItem>
               
-              <DropdownMenuSeparator className="bg-darkBorder/50" />
+              <DropdownMenuSeparator className="bg-secondary/30" />
               
               <DropdownMenuItem 
                 onClick={() => setShowSettings(true)}
                 className="hover:bg-darkSurface focus:bg-darkSurface flex items-center gap-2"
               >
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4 text-secondary" />
                 <span>Change Username</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -118,7 +118,7 @@ export default function Header() {
       </div>
 
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
-        <DialogContent className="bg-darkElevated border-darkBorder text-textPrimary shadow-2xl">
+        <DialogContent className="bg-darkElevated border-secondary/30 text-white shadow-2xl">
           <DialogHeader>
             <DialogTitle className="text-center font-heading tracking-wide">Identity Selection</DialogTitle>
           </DialogHeader>
@@ -127,19 +127,19 @@ export default function Header() {
               <Input
                 value={newUsername}
                 onChange={(e) => setNewUsername(e.target.value)}
-                className="bg-darkBg border-darkBorder text-textPrimary pl-10"
+                className="bg-darkBg border-secondary/30 text-white pl-10"
                 placeholder="Enter your alias"
                 maxLength={20}
               />
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-textMuted" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-secondary" />
             </div>
             
             <Button 
               variant="outline" 
               onClick={handleRandomUsername}
-              className="mt-3 w-full border-darkBorder bg-darkSurface hover:bg-darkSurface/80 text-textSecondary flex items-center justify-center gap-2"
+              className="mt-3 w-full border-secondary/30 bg-darkSurface hover:bg-darkSurface/80 text-white flex items-center justify-center gap-2"
             >
-              <Shuffle className="h-4 w-4" />
+              <Shuffle className="h-4 w-4 text-secondary" />
               <span>Generate Random Identity</span>
             </Button>
           </div>
@@ -147,13 +147,13 @@ export default function Header() {
             <Button 
               variant="ghost" 
               onClick={() => setShowSettings(false)}
-              className="text-textSecondary hover:text-textPrimary"
+              className="text-white/70 hover:text-white"
             >
               Cancel
             </Button>
             <Button 
               onClick={handleSaveUsername}
-              className="bg-primary hover:bg-primary/90 text-white"
+              className="bg-secondary hover:bg-secondary/90 text-white"
             >
               Confirm
             </Button>
