@@ -1,0 +1,97 @@
+/* Custom font imports */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 45 97% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --accent: 280 85% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  
+  /* Game-specific color palette */
+  --success: 142 76% 45%; /* Green */
+  --error: 0 90% 60%; /* Red */
+  --darkBg: 222 18% 11%; /* Dark blue-gray */
+  --darkElevated: 220 16% 16%; /* Slightly lighter than bg */
+  --darkSurface: 220 16% 14%; /* Between bg and elevated */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 45 97% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --accent: 280 85% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-darkBg text-white font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .game-card {
+    @apply bg-darkSurface border border-gray-800 shadow-lg;
+  }
+  
+  .btn-primary {
+    @apply bg-primary hover:bg-primary/90 text-white;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary/90 text-black;
+  }
+}
+
+/* Apply custom fonts */
+.font-heading {
+  font-family: 'Rubik', sans-serif;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: hsl(var(--darkBg));
+}
