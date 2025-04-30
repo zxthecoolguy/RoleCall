@@ -82,7 +82,7 @@ export default function JoinRoom({
                 type="button"
                 variant="outline"
                 className="bg-darkElevated hover:bg-gray-800 py-2 px-6 rounded-lg border border-gray-700"
-                onClick={() => navigateTo('home')}
+                onClick={() => onNavigate('home')}
               >
                 Cancel
               </Button>

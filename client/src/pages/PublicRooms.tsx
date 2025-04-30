@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigation } from '@/App';
+import { PageType } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import RoomCard from '@/components/RoomCard';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function PublicRooms() {
-  const { navigateTo } = useNavigation();
+export default function PublicRooms({
+  onNavigate
+}: {
+  onNavigate: (page: PageType) => void
+}) {
   const { publicRooms, joinRoom } = useRoom();
 
   const handleJoinRoom = (roomCode: string) => {
     joinRoom(roomCode);
     // Navigate to game lobby
-    navigateTo('game-lobby');
+    onNavigate('game-lobby');
   };
 
   if (!publicRooms) {
-    return <PublicRoomsSkeleton />;
+    return <PublicRoomsSkeleton onNavigate={onNavigate} />;
   }
 
   return (
@@ -26,7 +29,7 @@ export default function PublicRooms() {
         <Button
           variant="outline"
           className="bg-darkElevated hover:bg-gray-800 py-2 px-4 rounded-lg border border-gray-700 text-sm"
-          onClick={() => navigateTo('home')}
+          onClick={() => onNavigate('home')}
         >
           Back
         </Button>
@@ -38,7 +41,7 @@ export default function PublicRooms() {
           <p className="text-gray-400 mb-6">Be the first to create a public game room!</p>
           <Button
             className="bg-primary hover:bg-primary/90"
-            onClick={() => navigateTo('create-room')}
+            onClick={() => onNavigate('create-room')}
           >
             Create a Room
           </Button>
@@ -60,7 +63,7 @@ export default function PublicRooms() {
   );
 }
 
-function PublicRoomsSkeleton() {
+function PublicRoomsSkeleton({ onNavigate }: { onNavigate: (page: PageType) => void }) {
   return (
     <div className="py-6">
       <div className="flex justify-between items-center mb-6">
@@ -68,7 +71,7 @@ function PublicRoomsSkeleton() {
         <Button
           variant="outline"
           className="bg-darkElevated hover:bg-gray-800 py-2 px-4 rounded-lg border border-gray-700 text-sm"
-          onClick={() => {}}
+          onClick={() => onNavigate('home')}
         >
           Back
         </Button>

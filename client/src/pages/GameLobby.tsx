@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigation } from '@/App';
+import { PageType } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import { useUser } from '@/context/UserContext';
 import PlayerCard, { EmptyPlayerSlot } from '@/components/PlayerCard';
@@ -12,8 +12,11 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { RoomType } from '@shared/schema';
 
-export default function GameLobby() {
-  const { navigateTo } = useNavigation();
+export default function GameLobby({
+  onNavigate
+}: {
+  onNavigate: (page: PageType) => void
+}) {
   const { currentRoom, players, isHost, isReady, toggleReady, leaveRoom, startGame, updateRoomType } = useRoom();
   const { username } = useUser();
   const [showLeaveDialog, setShowLeaveDialog] = useState(false);
