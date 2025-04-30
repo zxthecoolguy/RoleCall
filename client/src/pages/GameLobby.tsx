@@ -73,7 +73,7 @@ export default function GameLobby({
                     <PlayerCard 
                       key={player.id} 
                       player={player}
-                      isCurrentPlayer={player.username === username}
+                      isCurrentPlayer={player.username.toLowerCase() === username.toLowerCase()}
                     />
                   ))}
                   {emptySlots}

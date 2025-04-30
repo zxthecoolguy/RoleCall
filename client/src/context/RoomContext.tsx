@@ -327,14 +327,14 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     });
   }, [currentRoom, sendMessage]);
   
-  // Calculate if user is host
+  // Calculate if user is host (case-insensitive comparison)
   const isHost = players.some(player => 
-    player.username === username && player.isHost
+    player.username.toLowerCase() === username.toLowerCase() && player.isHost
   );
   
-  // Calculate if user is ready
+  // Calculate if user is ready (case-insensitive comparison)
   const isReady = players.some(player => 
-    player.username === username && player.status === "ready"
+    player.username.toLowerCase() === username.toLowerCase() && player.status === "ready"
   );
   
   // Start the game (host only)
@@ -344,9 +344,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     
-    // Recalculate isHost within this callback to avoid circular dependency
+    // Recalculate isHost within this callback to avoid circular dependency (case-insensitive)
     const playerIsHost = players.some(player => 
-      player.username === username && player.isHost
+      player.username.toLowerCase() === username.toLowerCase() && player.isHost
     );
     
     if (!playerIsHost) {
@@ -368,9 +368,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     
-    // Recalculate isHost within this callback to avoid circular dependency
+    // Recalculate isHost within this callback to avoid circular dependency (case-insensitive)
     const playerIsHost = players.some(player => 
-      player.username === username && player.isHost
+      player.username.toLowerCase() === username.toLowerCase() && player.isHost
     );
     
     if (!playerIsHost) {
