@@ -33,8 +33,7 @@ export default function JoinRoom({
     }
     
     joinRoom(roomCode);
-    // Navigate immediately
-    onNavigate('game-lobby');
+    // Let the useEffect handle navigation
   };
 
   return (

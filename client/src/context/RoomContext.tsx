@@ -3,7 +3,6 @@ import { useWebSocket } from '@/lib/websocket';
 import { MessageType, type Room, type Player, type Message } from '@shared/schema';
 import { useUser } from './UserContext';
 import { useToast } from '@/hooks/use-toast';
-import { useNavigation } from '@/App';
 
 interface RoomContextType {
   // Room state
@@ -75,7 +74,6 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     }
   }
   const { toast } = useToast();
-  const { navigateTo } = useNavigation();
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -114,7 +112,6 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages([]);
           setLoading(false);
-          navigateTo('game-lobby');
         }
         break;
       
@@ -126,7 +123,6 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
           setPlayerId(lastMessage.payload.player.id);
           setMessages(lastMessage.payload.messages || []);
           setLoading(false);
-          navigateTo('game-lobby');
         }
         break;
       
@@ -174,7 +170,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
         break;
     }
-  }, [lastMessage, currentRoom, toast, navigateTo]);
+  }, [lastMessage, currentRoom, toast]);
   
   // Create a room
   const createRoom = useCallback((roomData: {
@@ -192,9 +188,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         username
       }
     });
-    // Navigate to lobby immediately
-    navigateTo('game-lobby');
-  }, [sendMessage, username, navigateTo]);
+    // Navigation is handled by the component
+  }, [sendMessage, username]);
   
   // Join a room
   const joinRoom = useCallback((code: string) => {
@@ -207,9 +202,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         username
       }
     });
-    // Navigate to lobby immediately
-    navigateTo('game-lobby');
-  }, [sendMessage, username, navigateTo]);
+    // Navigation is handled by the component
+  }, [sendMessage, username]);
   
   // Leave current room
   const leaveRoom = useCallback(() => {
@@ -226,9 +220,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       }
     });
     
-    // Return to home page
-    navigateTo('home');
-  }, [currentRoom, playerId, sendMessage, navigateTo]);
+    // Navigation is handled by the component
+  }, [currentRoom, playerId, sendMessage]);
   
   // Send a chat message
   const sendChatMessage = useCallback((content: string) => {

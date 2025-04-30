@@ -34,8 +34,7 @@ export default function CreateRoom({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createRoom(formData);
-    // Navigate immediately
-    onNavigate('game-lobby');
+    // Let the useEffect handle navigation when room is created
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
