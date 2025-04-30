@@ -24,22 +24,22 @@ export default function GameLobby({
 
   useEffect(() => {
     if (!currentRoom) {
-      navigateTo('home');
+      onNavigate('home');
     }
-  }, [currentRoom, navigateTo]);
+  }, [currentRoom, onNavigate]);
 
   if (!currentRoom || !players) {
-    return <GameLobbySkeleton />;
+    return <GameLobbySkeleton onNavigate={onNavigate} />;
   }
 
   const handleLeave = () => {
     leaveRoom();
-    navigateTo('home');
+    onNavigate('home');
   };
 
   const handleDisband = () => {
     leaveRoom();
-    navigateTo('home');
+    onNavigate('home');
   };
 
   const canStartGame = players.length >= 4 && 
@@ -220,7 +220,7 @@ export default function GameLobby({
   );
 }
 
-function GameLobbySkeleton() {
+function GameLobbySkeleton({ onNavigate }: { onNavigate: (page: PageType) => void }) {
   return (
     <div className="py-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
