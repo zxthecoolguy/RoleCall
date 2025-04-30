@@ -27,6 +27,26 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   });
   
+  // Wrapper function to handle username changes properly
+  const updateUsername = (newUsername: string) => {
+    console.log(`Updating username from ${username} to ${newUsername}`);
+    
+    try {
+      // Update localStorage first
+      localStorage.setItem('rolecall_username', newUsername);
+      
+      // Then update state
+      setUsername(newUsername);
+      
+      // Dispatch a custom event for other components to listen for username changes
+      window.dispatchEvent(new CustomEvent('usernameChanged', { 
+        detail: { oldUsername: username, newUsername } 
+      }));
+    } catch (error) {
+      console.warn('Error updating username:', error);
+    }
+  };
+  
   // Save username to localStorage when it changes
   useEffect(() => {
     try {
@@ -37,7 +57,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [username]);
   
   return (
-    <UserContext.Provider value={{ username, setUsername }}>
+    <UserContext.Provider value={{ username, setUsername: updateUsername }}>
       {children}
     </UserContext.Provider>
   );

@@ -19,20 +19,36 @@ export default function JoinRoom({
   const [playerName, setPlayerName] = useState(username);
 
   // Navigate to game lobby when room is joined
+  // Debug current username value from context
+  useEffect(() => {
+    console.log('JoinRoom component - current username from context:', username);
+  }, [username]);
+
+  // Navigate to game lobby when successfully joined a room
   useEffect(() => {
     if (currentRoom) {
+      console.log('Successfully joined room, navigating to game lobby');
       onNavigate('game-lobby');
     }
   }, [currentRoom, onNavigate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // First update the username if changed
     if (playerName !== username) {
       setUsername(playerName);
+      
+      // Give WebSocket connection time to update with the new username
+      // before attempting to join the room
+      setTimeout(() => {
+        joinRoom(roomCode);
+      }, 500);
+    } else {
+      // Username unchanged, join immediately
+      joinRoom(roomCode);
     }
     
-    joinRoom(roomCode);
     // Let the useEffect handle navigation
   };
 

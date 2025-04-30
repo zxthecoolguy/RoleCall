@@ -89,13 +89,51 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     sendMessage
   } = useWebSocket();
   
-  // Connect to websocket when username is available
+  // Store previous username to detect changes
+  const prevUsernameRef = React.useRef(username);
+  
+  // Connect to websocket when username is available or when username changes
   useEffect(() => {
     if (username && !isConnected) {
       console.log('Connecting WebSocket with username:', username);
       connect(username);
+    } else if (username && isConnected && prevUsernameRef.current !== username) {
+      // Username has changed, need to reconnect with new username
+      console.log(`Username changed from ${prevUsernameRef.current} to ${username}, reconnecting...`);
+      // Force disconnect and reconnect with new username
+      setTimeout(() => {
+        connect(username);
+      }, 300);
     }
+    
+    // Update the ref with current username
+    prevUsernameRef.current = username;
   }, [username, isConnected, connect]);
+  
+  // Listen for custom username change events (when setUsername is called)
+  useEffect(() => {
+    const handleUsernameChanged = (event: CustomEvent) => {
+      if (!event.detail) return;
+      
+      const { oldUsername, newUsername } = event.detail;
+      console.log(`Username change event detected: ${oldUsername} -> ${newUsername}`);
+      
+      if (isConnected) {
+        // Force reconnect with new username
+        setTimeout(() => {
+          connect(newUsername);
+        }, 300);
+      }
+    };
+    
+    // Add event listener
+    window.addEventListener('usernameChanged', handleUsernameChanged as EventListener);
+    
+    // Clean up
+    return () => {
+      window.removeEventListener('usernameChanged', handleUsernameChanged as EventListener);
+    };
+  }, [isConnected, connect]);
   
   // Handle WebSocket messages
   useEffect(() => {
@@ -193,13 +231,28 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   
   // Join a room
   const joinRoom = useCallback((code: string) => {
-    console.log('Joining room with code:', code);
+    // Get the current username from the context or localStorage
+    // This ensures we're using the most up-to-date username value
+    let currentUsername = username;
+    
+    // Double-check localStorage in case there was a recent update
+    try {
+      const storedUsername = localStorage.getItem('rolecall_username');
+      if (storedUsername && storedUsername !== username) {
+        console.log(`Using updated username from localStorage: ${storedUsername}`);
+        currentUsername = storedUsername;
+      }
+    } catch (e) {
+      console.error('Error reading username from localStorage:', e);
+    }
+    
+    console.log('Joining room with code:', code, 'as user:', currentUsername);
     setLoading(true);
     sendMessage({
       type: MessageType.JOIN_ROOM,
       payload: {
         code,
-        username
+        username: currentUsername
       }
     });
     // Navigation is handled by the component
