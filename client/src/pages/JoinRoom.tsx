@@ -34,18 +34,23 @@ export default function JoinRoom({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(`Join Room form submitted - roomCode: ${roomCode}, playerName: ${playerName}, current username: ${username}`);
     
     // First update the username if changed
     if (playerName !== username) {
+      console.log(`Username changing from ${username} to ${playerName}`);
       setUsername(playerName);
       
       // Give WebSocket connection time to update with the new username
       // before attempting to join the room
+      console.log('Scheduling delayed join room call to allow username update to propagate');
       setTimeout(() => {
+        console.log(`Executing delayed join room with code: ${roomCode} as user: ${playerName}`);
         joinRoom(roomCode);
-      }, 500);
+      }, 1000);
     } else {
       // Username unchanged, join immediately
+      console.log(`Joining room immediately with code: ${roomCode} as user: ${username}`);
       joinRoom(roomCode);
     }
     

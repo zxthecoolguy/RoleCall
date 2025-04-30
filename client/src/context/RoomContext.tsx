@@ -154,12 +154,26 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         break;
       
       case MessageType.JOIN_ROOM:
+        console.log('JOIN_ROOM message received:', lastMessage.payload);
         if (lastMessage.payload.success) {
           console.log('Joined room successfully:', lastMessage.payload.room);
-          setCurrentRoom(lastMessage.payload.room);
-          setPlayers(lastMessage.payload.players || []);
-          setPlayerId(lastMessage.payload.player.id);
-          setMessages(lastMessage.payload.messages || []);
+          console.log('Players:', lastMessage.payload.players);
+          console.log('Current player:', lastMessage.payload.player);
+          
+          // Set state values in order with proper null checking
+          try {
+            setCurrentRoom(lastMessage.payload.room);
+            setPlayers(lastMessage.payload.players || []);
+            setPlayerId(lastMessage.payload.player?.id || null);
+            setMessages(lastMessage.payload.messages || []);
+            setLoading(false);
+            
+            console.log('Room state updated after joining');
+          } catch (error) {
+            console.error('Error updating state after joining room:', error);
+          }
+        } else {
+          console.error('Failed to join room:', lastMessage.payload.message);
           setLoading(false);
         }
         break;

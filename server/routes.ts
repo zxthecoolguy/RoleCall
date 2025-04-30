@@ -241,12 +241,25 @@ async function handleJoinRoom(ws: WebSocket, payload: {
     const players = await storage.getPlayersInRoom(room.id);
     
     // Check if username is already taken in this room by an active player
-    const isUsernameTaken = players.some(player => 
+    const existingPlayerWithSameName = players.find(player => 
       player.username.toLowerCase() === username.toLowerCase()
     );
     
-    if (isUsernameTaken) {
-      return sendErrorToClient(ws, "Username already taken in this room");
+    if (existingPlayerWithSameName) {
+      console.log(`Username collision detected: "${username}" conflicts with existing "${existingPlayerWithSameName.username}"`);
+      
+      // If the usernames differ only by case, we'll allow this but normalize the casing
+      // This fixes issues where a player might try to rejoin with different casing
+      const normalizedUsername = existingPlayerWithSameName.username;
+      
+      // Send specific error for exact matches
+      if (existingPlayerWithSameName.username === username) {
+        return sendErrorToClient(ws, "Username already taken in this room");
+      }
+      
+      // Continue with the normalized username
+      console.log(`Using normalized username: "${normalizedUsername}" instead of "${username}"`);
+      username = normalizedUsername;
     }
     
     // Check if room is full
@@ -282,16 +295,27 @@ async function handleJoinRoom(ws: WebSocket, payload: {
     // Get messages for the room
     const messages = await storage.getMessagesForRoom(room.id);
     
-    // Send room data to the client
+    // Send room data to the client with all required info
+    const responseData = {
+      room,
+      players,
+      player,
+      messages,
+      success: true
+    };
+    
+    // Debug the response
+    console.log(`JOIN_ROOM response for user ${username}:`, {
+      roomName: room.name,
+      roomCode: room.code,
+      playerCount: players.length,
+      playerId: player.id,
+      messageCount: messages.length
+    });
+    
     sendToClient(ws, {
       type: MessageType.JOIN_ROOM,
-      payload: { 
-        room,
-        players,
-        player,
-        messages,
-        success: true 
-      }
+      payload: responseData
     });
     
     // Notify other players in the room
