@@ -26,6 +26,9 @@ export default function TestNavigation({
         <Button onClick={() => onNavigate('game-lobby')}>
           Go to Game Lobby
         </Button>
+        <Button onClick={() => onNavigate('admin')} variant="destructive">
+          Admin Tools
+        </Button>
       </div>
     </div>
   );
