@@ -112,6 +112,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await handleUpdateRoomSettings(ws, data.payload);
             break;
             
+          case MessageType.ADMIN_COMMAND:
+            await handleAdminCommand(ws, data.payload);
+            break;
+            
           default:
             sendErrorToClient(ws, "Unknown message type");
         }
@@ -635,6 +639,49 @@ function broadcastToRoom(roomId: number, message: WebSocketMessage) {
 function sendToClient(client: WebSocket, message: WebSocketMessage) {
   if (client.readyState === WebSocket.OPEN) {
     client.send(JSON.stringify(message));
+  }
+}
+
+async function handleAdminCommand(ws: WebSocket, payload: { command: string }) {
+  const { command } = payload;
+  const clientData = clients.get(ws);
+  
+  if (!clientData) {
+    return sendErrorToClient(ws, "Not connected");
+  }
+  
+  try {
+    switch (command) {
+      case 'delete_all_rooms':
+        // Get all public rooms
+        const publicRooms = await storage.getPublicRooms();
+        
+        // Delete each room
+        let deletedCount = 0;
+        for (const room of publicRooms) {
+          await storage.deleteRoom(room.id);
+          deletedCount++;
+        }
+        
+        // Send response to client
+        sendToClient(ws, {
+          type: MessageType.ADMIN_RESPONSE,
+          payload: { 
+            message: `Successfully deleted ${deletedCount} rooms.`,
+            success: true 
+          }
+        });
+        
+        // Update public rooms list
+        broadcastPublicRooms();
+        break;
+        
+      default:
+        sendErrorToClient(ws, "Unknown admin command");
+    }
+  } catch (error) {
+    console.error("Error executing admin command:", error);
+    sendErrorToClient(ws, "Failed to execute admin command");
   }
 }
 

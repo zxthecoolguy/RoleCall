@@ -104,7 +104,9 @@ export enum MessageType {
   CONNECT = "connect",
   PLAYER_UPDATE = "player_update",
   ROOM_LIST_UPDATE = "room_list_update",
-  UPDATE_ROOM_SETTINGS = "update_room_settings"
+  UPDATE_ROOM_SETTINGS = "update_room_settings",
+  ADMIN_COMMAND = "admin_command",
+  ADMIN_RESPONSE = "admin_response"
 }
 
 // WebSocket message format

@@ -4,6 +4,7 @@ import CreateRoom from "@/pages/CreateRoom";
 import JoinRoom from "@/pages/JoinRoom";
 import PublicRooms from "@/pages/PublicRooms";
 import GameLobby from "@/pages/GameLobby";
+import AdminTools from "@/pages/AdminTools";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { RoomProvider } from "@/context/RoomContext";
@@ -11,7 +12,7 @@ import { UserProvider } from "@/context/UserContext";
 import TestNavigation from "@/pages/TestNavigation";
 
 // Create a navigation context that will control which page to show
-export type PageType = 'home' | 'create-room' | 'join-room' | 'public-rooms' | 'game-lobby';
+export type PageType = 'home' | 'create-room' | 'join-room' | 'public-rooms' | 'game-lobby' | 'admin';
 
 interface NavigationContextType {
   currentPage: PageType;
@@ -66,6 +67,8 @@ function App() {
         return <PublicRooms onNavigate={directNavigate} />;
       case 'game-lobby':
         return <GameLobby onNavigate={directNavigate} />;
+      case 'admin':
+        return <AdminTools onNavigate={directNavigate} />;
       default:
         return <Home onNavigate={directNavigate} />;
     }
