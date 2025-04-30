@@ -233,14 +233,19 @@ async function handleJoinRoom(ws: WebSocket, payload: {
       return sendErrorToClient(ws, "Game has already started");
     }
     
-    // Check if username is already taken in this room
-    const existingPlayer = await storage.getPlayerByUsername(room.id, username);
-    if (existingPlayer) {
+    // Get all players in the room
+    const players = await storage.getPlayersInRoom(room.id);
+    
+    // Check if username is already taken in this room by an active player
+    const isUsernameTaken = players.some(player => 
+      player.username.toLowerCase() === username.toLowerCase()
+    );
+    
+    if (isUsernameTaken) {
       return sendErrorToClient(ws, "Username already taken in this room");
     }
     
     // Check if room is full
-    const players = await storage.getPlayersInRoom(room.id);
     if (players.length >= room.capacity) {
       return sendErrorToClient(ws, "Room is full");
     }
