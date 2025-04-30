@@ -46,22 +46,28 @@ function App() {
     console.log('Current page state:', currentPage);
   }, [currentPage]);
 
+  // Direct navigation function for passing to components
+  const directNavigate = (page: PageType) => {
+    console.log('Direct navigation called to:', page);
+    setCurrentPage(page);
+  };
+
   // Render the appropriate page based on the current state
   const renderPage = () => {
     console.log('Rendering page:', currentPage);
     switch (currentPage) {
       case 'home':
-        return <Home />;
+        return <Home onNavigate={directNavigate} />;
       case 'create-room':
-        return <CreateRoom />;
+        return <CreateRoom onNavigate={directNavigate} />;
       case 'join-room':
-        return <JoinRoom />;
+        return <JoinRoom onNavigate={directNavigate} />;
       case 'public-rooms':
-        return <PublicRooms />;
+        return <PublicRooms onNavigate={directNavigate} />;
       case 'game-lobby':
-        return <GameLobby />;
+        return <GameLobby onNavigate={directNavigate} />;
       default:
-        return <Home />;
+        return <Home onNavigate={directNavigate} />;
     }
   };
 

@@ -6,12 +6,15 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { useNavigation } from '@/App';
+import { PageType } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import { RoomType } from '@shared/schema';
 
-export default function CreateRoom() {
-  const { navigateTo } = useNavigation();
+export default function CreateRoom({ 
+  onNavigate 
+}: { 
+  onNavigate: (page: PageType) => void 
+}) {
   const { createRoom, loading, currentRoom } = useRoom();
   
   const [formData, setFormData] = useState({
@@ -24,15 +27,15 @@ export default function CreateRoom() {
   // Navigate to game lobby when room is created
   useEffect(() => {
     if (currentRoom) {
-      navigateTo('game-lobby');
+      onNavigate('game-lobby');
     }
-  }, [currentRoom, navigateTo]);
+  }, [currentRoom, onNavigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createRoom(formData);
     // Navigate immediately
-    navigateTo('game-lobby');
+    onNavigate('game-lobby');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,7 +132,7 @@ export default function CreateRoom() {
                 type="button"
                 variant="outline"
                 className="bg-darkElevated hover:bg-gray-800 py-2 px-6 rounded-lg border border-gray-700"
-                onClick={() => navigateTo('home')}
+                onClick={() => onNavigate('home')}
               >
                 Cancel
               </Button>

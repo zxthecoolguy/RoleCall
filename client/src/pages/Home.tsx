@@ -1,26 +1,28 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigation, NavigationContext } from '@/App';
+import { PageType } from '@/App';
 import { Users, Swords, Eye, Shield, UserCheck } from 'lucide-react';
 
-export default function Home() {
-  // Direct access to the navigation context for debugging
-  const navigationContext = useContext(NavigationContext);
-  
-  // Handle the navigation directly with the context state updater
+// Component using direct state setter approach
+export default function Home({
+  onNavigate
+}: {
+  onNavigate: (page: PageType) => void
+}) {
+  // Handle navigation with direct state setters
   const handleCreateRoom = () => {
     console.log('Create Room clicked');
-    navigationContext.navigateTo('create-room');
+    onNavigate('create-room');
   };
 
   const handleJoinRoom = () => {
     console.log('Join Room clicked');
-    navigationContext.navigateTo('join-room');
+    onNavigate('join-room');
   };
 
   const handleBrowseRooms = () => {
     console.log('Browse Rooms clicked');
-    navigationContext.navigateTo('public-rooms');
+    onNavigate('public-rooms');
   };
 
   return (

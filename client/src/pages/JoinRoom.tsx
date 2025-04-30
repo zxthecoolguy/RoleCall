@@ -3,12 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useNavigation } from '@/App';
+import { PageType } from '@/App';
 import { useRoom } from '@/context/RoomContext';
 import { useUser } from '@/context/UserContext';
 
-export default function JoinRoom() {
-  const { navigateTo } = useNavigation();
+export default function JoinRoom({
+  onNavigate
+}: {
+  onNavigate: (page: PageType) => void
+}) {
   const { joinRoom, loading, currentRoom } = useRoom();
   const { username, setUsername } = useUser();
   
@@ -18,9 +21,9 @@ export default function JoinRoom() {
   // Navigate to game lobby when room is joined
   useEffect(() => {
     if (currentRoom) {
-      navigateTo('game-lobby');
+      onNavigate('game-lobby');
     }
-  }, [currentRoom, navigateTo]);
+  }, [currentRoom, onNavigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +34,7 @@ export default function JoinRoom() {
     
     joinRoom(roomCode);
     // Navigate immediately
-    navigateTo('game-lobby');
+    onNavigate('game-lobby');
   };
 
   return (
