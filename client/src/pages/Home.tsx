@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigation } from '@/App';
+import { useNavigation, NavigationContext } from '@/App';
 import { Users, Swords, Eye, Shield, UserCheck } from 'lucide-react';
 
 export default function Home() {
-  const { navigateTo } = useNavigation();
+  // Direct access to the navigation context for debugging
+  const navigationContext = useContext(NavigationContext);
   
+  // Handle the navigation directly with the context state updater
   const handleCreateRoom = () => {
     console.log('Create Room clicked');
-    navigateTo('create-room');
+    navigationContext.navigateTo('create-room');
   };
 
   const handleJoinRoom = () => {
     console.log('Join Room clicked');
-    navigateTo('join-room');
+    navigationContext.navigateTo('join-room');
   };
 
   const handleBrowseRooms = () => {
     console.log('Browse Rooms clicked');
-    navigateTo('public-rooms');
+    navigationContext.navigateTo('public-rooms');
   };
 
   return (
