@@ -80,11 +80,12 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const [publicRooms, setPublicRooms] = useState<(Room & { playerCount: number })[]>([]);
   const [loading, setLoading] = useState(false);
   const [playerId, setPlayerId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   const {
     isConnected,
     lastMessage,
-    error,
+    error: wsError,
     connect,
     sendMessage
   } = useWebSocket();
@@ -214,6 +215,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       
       case MessageType.ERROR:
         console.error('Error from server:', lastMessage.payload.message);
+        setError(lastMessage.payload.message);
         toast({
           title: "Error",
           description: lastMessage.payload.message,
@@ -245,6 +247,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   
   // Join a room
   const joinRoom = useCallback((code: string) => {
+    // Reset error state
+    setError(null);
+    
     // Get the current username from the context or localStorage
     // This ensures we're using the most up-to-date username value
     let currentUsername = username;

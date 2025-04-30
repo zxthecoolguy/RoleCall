@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,13 +12,24 @@ export default function JoinRoom({
 }: {
   onNavigate: (page: PageType) => void
 }) {
-  const { joinRoom, loading, currentRoom } = useRoom();
+  const { joinRoom, loading, currentRoom, error } = useRoom();
   const { username, setUsername } = useUser();
   
   const [roomCode, setRoomCode] = useState('');
   const [playerName, setPlayerName] = useState(username);
+  const [joinAttempted, setJoinAttempted] = useState(false);
+  const joinTimeoutRef = useRef<number | null>(null);
 
-  // Navigate to game lobby when room is joined
+  // Track when we're trying to join
+  useEffect(() => {
+    return () => {
+      // Clean up any pending timeouts when component unmounts
+      if (joinTimeoutRef.current) {
+        clearTimeout(joinTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Debug current username value from context
   useEffect(() => {
     console.log('JoinRoom component - current username from context:', username);
@@ -26,15 +37,18 @@ export default function JoinRoom({
 
   // Navigate to game lobby when successfully joined a room
   useEffect(() => {
-    if (currentRoom) {
+    if (currentRoom && joinAttempted) {
       console.log('Successfully joined room, navigating to game lobby');
       onNavigate('game-lobby');
     }
-  }, [currentRoom, onNavigate]);
+  }, [currentRoom, joinAttempted, onNavigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`Join Room form submitted - roomCode: ${roomCode}, playerName: ${playerName}, current username: ${username}`);
+    
+    // Set flag that we're attempting to join
+    setJoinAttempted(true);
     
     // First update the username if changed
     if (playerName !== username) {
@@ -44,18 +58,34 @@ export default function JoinRoom({
       // Give WebSocket connection time to update with the new username
       // before attempting to join the room
       console.log('Scheduling delayed join room call to allow username update to propagate');
-      setTimeout(() => {
+      
+      // Clear any existing timeout
+      if (joinTimeoutRef.current) {
+        clearTimeout(joinTimeoutRef.current);
+      }
+      
+      // Set new timeout 
+      joinTimeoutRef.current = window.setTimeout(() => {
         console.log(`Executing delayed join room with code: ${roomCode} as user: ${playerName}`);
-        joinRoom(roomCode);
+        joinRoom(roomCode.toUpperCase()); // Ensure uppercase for consistency
+        joinTimeoutRef.current = null;
       }, 1000);
     } else {
       // Username unchanged, join immediately
       console.log(`Joining room immediately with code: ${roomCode} as user: ${username}`);
-      joinRoom(roomCode);
+      joinRoom(roomCode.toUpperCase()); // Ensure uppercase for consistency
     }
     
     // Let the useEffect handle navigation
   };
+
+  // Reset join attempts if error occurs
+  useEffect(() => {
+    if (error) {
+      console.error('Error occurred during join attempt:', error);
+      setJoinAttempted(false);
+    }
+  }, [error]);
 
   return (
     <div className="max-w-lg mx-auto py-6">
@@ -63,6 +93,11 @@ export default function JoinRoom({
       
       <Card className="game-card rounded-lg bg-darkSurface border-gray-800">
         <CardContent className="pt-6">
+          {error && (
+            <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded text-white text-sm">
+              Error: {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <Label htmlFor="code" className="block text-gray-300 mb-2">Enter Room Code</Label>

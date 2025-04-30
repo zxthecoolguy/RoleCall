@@ -223,7 +223,10 @@ async function handleJoinRoom(ws: WebSocket, payload: {
   code: string;
   username: string;
 }) {
-  const { code, username } = payload;
+  let { code, username } = payload;
+  
+  // Force uppercase room code for consistency
+  code = code.toUpperCase();
   
   try {
     // Find the room
