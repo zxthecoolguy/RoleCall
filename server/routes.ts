@@ -653,13 +653,30 @@ async function handleAdminCommand(ws: WebSocket, payload: { command: string }) {
   try {
     switch (command) {
       case 'delete_all_rooms':
-        // Get all public rooms
+        // Get all rooms - we'll combine public rooms with any private rooms we find
         const publicRooms = await storage.getPublicRooms();
+        
+        // We need to query for private rooms by going through all players
+        // This is a bit inefficient but works for an admin tool
+        const playerEntries = Array.from(clients.entries());
+        const roomIds = new Set<number>();
+        
+        // Add public room IDs to our set
+        for (const room of publicRooms) {
+          roomIds.add(room.id);
+        }
+        
+        // Add private room IDs from clients
+        for (const [, clientData] of playerEntries) {
+          if (clientData.roomId && !roomIds.has(clientData.roomId)) {
+            roomIds.add(clientData.roomId);
+          }
+        }
         
         // Delete each room
         let deletedCount = 0;
-        for (const room of publicRooms) {
-          await storage.deleteRoom(room.id);
+        for (const roomId of roomIds) {
+          await storage.deleteRoom(roomId);
           deletedCount++;
         }
         

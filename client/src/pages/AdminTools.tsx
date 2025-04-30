@@ -12,8 +12,15 @@ export default function AdminTools({
   onNavigate: (page: PageType) => void
 }) {
   const [message, setMessage] = useState<string | null>(null);
-  const { isConnected, sendMessage, lastMessage } = useWebSocket();
+  const { isConnected, sendMessage, lastMessage, connect } = useWebSocket();
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Ensure connection is established when visiting admin page
+  useEffect(() => {
+    if (!isConnected) {
+      connect('Admin');
+    }
+  }, [isConnected, connect]);
 
   useEffect(() => {
     if (lastMessage?.type === MessageType.ADMIN_RESPONSE) {
